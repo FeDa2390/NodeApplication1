@@ -47,10 +47,6 @@ namespace API.Data
         public async Task<IEnumerable<CandidateDto>> GetCandidatesByFilterAsync(CandidateParams candidateParams)
         {
             var query = _context.Candidates.AsQueryable();
-            if (!String.IsNullOrEmpty(candidateParams.Qualification))
-            {
-                query = query.Where(x => x.Qualification == candidateParams.Qualification);
-            }
             if (!String.IsNullOrEmpty(candidateParams.City))
             {
                 query = query.Where(x => x.City == candidateParams.City);
@@ -69,13 +65,6 @@ namespace API.Data
             return _context.Candidates
                 .Where(x => x.Username == username)
                 .Select(x => x.City).FirstOrDefaultAsync();
-        }
-
-        public Task<string> GetQualification(string username)
-        {
-            return _context.Candidates
-                .Where(x => x.Username == username)
-                .Select(x => x.Qualification).FirstOrDefaultAsync();
         }
     }
 }

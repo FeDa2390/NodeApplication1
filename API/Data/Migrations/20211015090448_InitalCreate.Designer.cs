@@ -4,14 +4,16 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace API.DataMigrations
+namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211015090448_InitalCreate")]
+    partial class InitalCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,10 +43,10 @@ namespace API.DataMigrations
                     b.Property<string>("EMail")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NameCandidate")
+                    b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Qualification")
+                    b.Property<string>("NameCandidate")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SurnameCandidate")
@@ -58,66 +60,33 @@ namespace API.DataMigrations
                     b.ToTable("Candidates");
                 });
 
-            modelBuilder.Entity("API.Entities.CandidateVacancy", b =>
+            modelBuilder.Entity("API.Entities.CertificateOfStudy", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccessFailedCount")
+                    b.Property<int?>("CertCandidateId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CandidateId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("CertDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("ConcurrencyStamp")
+                    b.Property<string>("Certificate")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
+                    b.Property<string>("SchoolUniversity")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("VacancyId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CandidateId");
+                    b.HasIndex("CertCandidateId");
 
-                    b.HasIndex("VacancyId");
-
-                    b.ToTable("CandidateVacancy");
+                    b.ToTable("CertificateOfStudy");
                 });
 
             modelBuilder.Entity("API.Entities.Vacancy", b =>
@@ -136,9 +105,6 @@ namespace API.DataMigrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Experience")
                         .HasColumnType("nvarchar(max)");
 
@@ -148,40 +114,59 @@ namespace API.DataMigrations
                     b.Property<double>("Salary")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("Vacancies")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkingHours")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Vacancy");
+                    b.ToTable("Vacancies");
                 });
 
-            modelBuilder.Entity("API.Entities.CandidateVacancy", b =>
+            modelBuilder.Entity("CandidateVacancy", b =>
                 {
-                    b.HasOne("API.Entities.Candidate", "Candidate")
-                        .WithMany("CandidateVacancies")
-                        .HasForeignKey("CandidateId");
+                    b.Property<int>("CandidatesId")
+                        .HasColumnType("int");
 
-                    b.HasOne("API.Entities.Vacancy", "Vacancy")
-                        .WithMany("CandidateVacancies")
-                        .HasForeignKey("VacancyId");
+                    b.Property<int>("VacanciesId")
+                        .HasColumnType("int");
 
-                    b.Navigation("Candidate");
+                    b.HasKey("CandidatesId", "VacanciesId");
 
-                    b.Navigation("Vacancy");
+                    b.HasIndex("VacanciesId");
+
+                    b.ToTable("CandidateVacancy");
+                });
+
+            modelBuilder.Entity("API.Entities.CertificateOfStudy", b =>
+                {
+                    b.HasOne("API.Entities.Candidate", "CertCandidate")
+                        .WithMany("Certificates")
+                        .HasForeignKey("CertCandidateId");
+
+                    b.Navigation("CertCandidate");
+                });
+
+            modelBuilder.Entity("CandidateVacancy", b =>
+                {
+                    b.HasOne("API.Entities.Candidate", null)
+                        .WithMany()
+                        .HasForeignKey("CandidatesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.Vacancy", null)
+                        .WithMany()
+                        .HasForeignKey("VacanciesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("API.Entities.Candidate", b =>
                 {
-                    b.Navigation("CandidateVacancies");
-                });
-
-            modelBuilder.Entity("API.Entities.Vacancy", b =>
-                {
-                    b.Navigation("CandidateVacancies");
+                    b.Navigation("Certificates");
                 });
 #pragma warning restore 612, 618
         }

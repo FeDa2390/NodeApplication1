@@ -9,8 +9,15 @@ namespace API.Data
         {
         }
         public DbSet<Candidate> Candidates { get; set; }
-        // public DbSet<Vacancy> Vacancies { get; set; }
-        // public DbSet<Company> Companies { get; set; }
-        // public DbSet<CandidateVacancy> CandidatesVacancy { get; set; }
+        public DbSet<Vacancy> Vacancies { get; set; }        
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<Candidate>()
+                .HasMany(v => v.Vacancies)
+                .WithMany(c => c.Candidates)
+                .UsingEntity(cv => cv.ToTable("CandidateVacancy"));
+        }
     }
 }

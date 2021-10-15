@@ -4,7 +4,7 @@ namespace API.Interfaces
 {
     public interface IUnitOfWork
     {
-         ICandidateRepository CandidateRepository { get; }
+        ICandidateRepository CandidateRepository { get; }
 
         Task<bool> Complete();
         bool HasChages();

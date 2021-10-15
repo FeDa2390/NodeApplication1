@@ -12,9 +12,8 @@ namespace API.Entities
         public string Experience { get; set; }
         public int Vacancies { get; set; }
         public int ContractPeriod { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public int WorkingHours { get; set; }
         public double Salary { get; set; }
-        public ICollection<CandidateVacancy> CandidateVacancies { get; set; }
+        public ICollection<Candidate> Candidates { get; set; }
     }
 }

@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class CandidateController : BaseApiController
+    public class CandidatesController : BaseApiController
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public CandidateController(IUnitOfWork unitOfWork, IMapper mapper)
+        public CandidatesController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
