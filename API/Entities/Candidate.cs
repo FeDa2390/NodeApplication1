@@ -17,5 +17,6 @@ namespace API.Entities
         public string Gender { get; set; }
         public ICollection<Vacancy> Vacancies { get; set; }
         public ICollection<CertificateOfStudy> Certificates { get; set; }
+        public ICollection<Skill> Skills { get; set; }
     }
 }

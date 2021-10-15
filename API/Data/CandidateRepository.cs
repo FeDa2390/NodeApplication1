@@ -66,5 +66,12 @@ namespace API.Data
                 .Where(x => x.Username == username)
                 .Select(x => x.City).FirstOrDefaultAsync();
         }
+
+        public async Task<Candidate> GetCandidateByIdAsync(int id)
+        {
+            return await _context.Candidates
+                .Where(x => x.Id == id)
+                .SingleOrDefaultAsync();
+        }
     }
 }

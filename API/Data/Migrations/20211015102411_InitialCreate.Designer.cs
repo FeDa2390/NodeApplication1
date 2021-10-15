@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211015090448_InitalCreate")]
-    partial class InitalCreate
+    [Migration("20211015102411_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -86,7 +86,30 @@ namespace API.Data.Migrations
 
                     b.HasIndex("CertCandidateId");
 
-                    b.ToTable("CertificateOfStudy");
+                    b.ToTable("CertificatesOfStudy");
+                });
+
+            modelBuilder.Entity("API.Entities.Dossier", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Document")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int?>("DossierCandidateId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DossierCandidateId");
+
+                    b.ToTable("Dossiers");
                 });
 
             modelBuilder.Entity("API.Entities.Vacancy", b =>
@@ -147,6 +170,15 @@ namespace API.Data.Migrations
                         .HasForeignKey("CertCandidateId");
 
                     b.Navigation("CertCandidate");
+                });
+
+            modelBuilder.Entity("API.Entities.Dossier", b =>
+                {
+                    b.HasOne("API.Entities.Candidate", "DossierCandidate")
+                        .WithMany()
+                        .HasForeignKey("DossierCandidateId");
+
+                    b.Navigation("DossierCandidate");
                 });
 
             modelBuilder.Entity("CandidateVacancy", b =>

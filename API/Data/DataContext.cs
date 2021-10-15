@@ -10,6 +10,8 @@ namespace API.Data
         }
         public DbSet<Candidate> Candidates { get; set; }
         public DbSet<Vacancy> Vacancies { get; set; }        
+        public DbSet<CertificateOfStudy> CertificatesOfStudy { get; set; }
+        public DbSet<Dossier> Dossiers { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

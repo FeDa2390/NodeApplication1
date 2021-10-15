@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace API.Entities
@@ -15,5 +16,6 @@ namespace API.Entities
         public int WorkingHours { get; set; }
         public double Salary { get; set; }
         public ICollection<Candidate> Candidates { get; set; }
+        public ICollection<Skill> Skills { get; set;}
     }
 }

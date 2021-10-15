@@ -4,14 +4,16 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211015145233_UpdateSchemaDB")]
+    partial class UpdateSchemaDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,7 +128,12 @@ namespace API.Data.Migrations
                     b.Property<string>("SkillType")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("VacancyId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("VacancyId");
 
                     b.ToTable("Skill");
                 });
@@ -197,21 +204,6 @@ namespace API.Data.Migrations
                     b.ToTable("CandidateVacancy");
                 });
 
-            modelBuilder.Entity("SkillVacancy", b =>
-                {
-                    b.Property<int>("SkillsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VacanciesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SkillsId", "VacanciesId");
-
-                    b.HasIndex("VacanciesId");
-
-                    b.ToTable("SkillVacancy");
-                });
-
             modelBuilder.Entity("API.Entities.CertificateOfStudy", b =>
                 {
                     b.HasOne("API.Entities.Candidate", "CertCandidate")
@@ -228,6 +220,13 @@ namespace API.Data.Migrations
                         .HasForeignKey("DossierCandidateId");
 
                     b.Navigation("DossierCandidate");
+                });
+
+            modelBuilder.Entity("API.Entities.Skill", b =>
+                {
+                    b.HasOne("API.Entities.Vacancy", null)
+                        .WithMany("Skills")
+                        .HasForeignKey("VacancyId");
                 });
 
             modelBuilder.Entity("CandidateSkill", b =>
@@ -260,24 +259,14 @@ namespace API.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SkillVacancy", b =>
-                {
-                    b.HasOne("API.Entities.Skill", null)
-                        .WithMany()
-                        .HasForeignKey("SkillsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("API.Entities.Vacancy", null)
-                        .WithMany()
-                        .HasForeignKey("VacanciesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("API.Entities.Candidate", b =>
                 {
                     b.Navigation("Certificates");
+                });
+
+            modelBuilder.Entity("API.Entities.Vacancy", b =>
+                {
+                    b.Navigation("Skills");
                 });
 #pragma warning restore 612, 618
         }

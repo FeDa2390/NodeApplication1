@@ -27,7 +27,7 @@ namespace API.Controllers
             return Ok(candidates);
         }
 
-        [HttpGet("{username}")]
+        [HttpGet("{username}", Name = "GetCandidate")]
         public async Task<ActionResult<CandidateDto>> GetCandidate(string username)
         {
             return await _unitOfWork.CandidateRepository.GetCandidateAsync(username);
@@ -38,6 +38,20 @@ namespace API.Controllers
         {
             var candidates = await _unitOfWork.CandidateRepository.GetCandidatesByFilterAsync(candidateParams);
             return Ok(candidates);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateCandidate(CandidateUpdateDto candidateUpdateDto)
+        {
+            var candidate = await _unitOfWork.CandidateRepository.GetCandidateByIdAsync(candidateUpdateDto.Id);
+
+            _mapper.Map(candidateUpdateDto, candidate);
+
+            _unitOfWork.CandidateRepository.Update(candidate);
+
+            if (await _unitOfWork.Complete()) return NoContent();
+
+            return BadRequest("Failed to update candidate");
         }
     }
 }
