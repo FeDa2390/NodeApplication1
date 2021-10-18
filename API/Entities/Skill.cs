@@ -8,6 +8,7 @@ namespace API.Entities
         public string SkillName { get; set; }
         public string Description { get; set; }
         public string SkillType { get; set; }
+        public string Category { get; set; }
         public ICollection<Candidate> Candidates { get; set; }
         public ICollection<Vacancy> Vacancies { get; set; }
     }

@@ -12,11 +12,15 @@ import { CandidateParams } from '../_models/candidateParams';
 export class AccountService {
   baseUrl = environment.apiUrl;
   candidateCache = new Map();
-  candidates: Candidate[] = [];
+  candidates: Candidate[];
+  candidatesParams: CandidateParams;
+  candidate: Candidate;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    this.candidatesParams = new CandidateParams();
+  }
 
-  getCandidates(candidateParams: CandidateParams) {
+  getCandidates(candidateParams1: CandidateParams) {
     var response = this.candidateCache.get(Object.values(CandidateParams).join('-'));
     if (response) {
       return of(response);
@@ -24,18 +28,16 @@ export class AccountService {
 
     let params = new HttpParams();
 
-    params = params.append('minAge', candidateParams.minAge.toString());
-    params = params.append('maxAge', candidateParams.maxAge.toString());
-    params = params.append('country', candidateParams.country);
-    params = params.append('city', candidateParams.city);
-    params = params.append('skill', candidateParams.skill);
-    params = params.append('grade', candidateParams.grade);
+    params = params.append('minAge', candidateParams1.minAge.toString());
+    params = params.append('maxAge', candidateParams1.maxAge.toString());
+    // params = params.append('country', candidateParams.country);
+    // params = params.append('city', candidateParams.city);
+    // params = params.append('skill', candidateParams.skill);
+    // params = params.append('grade', candidateParams.grade);
     
-    let candidatesResponse: any;
-    return this.http.get<Candidate>(this.baseUrl, { observe: 'response', params }).pipe (
+    // let candidatesResponse: any;
+    return this.http.get<Candidate>(this.baseUrl + 'candidates/filter-candidates', { observe: 'response', params }).pipe (
       map(response => {
-        candidatesResponse = response;
-        this.candidateCache.set(Object.values(candidateParams).join('-'), response);
         return response;
       })
     );
@@ -60,5 +62,21 @@ export class AccountService {
     }
 
     return this.http.get<Candidate>(this.baseUrl + 'candidates/'+ username);
+  }
+
+  getCandidates1() {
+    this.http.get(this.baseUrl + 'candidates')
+      .subscribe(response => {
+        return response;
+      })
+  }
+
+  resetCandidateParams() {
+    this.candidatesParams = new CandidateParams();
+    return this.candidatesParams;
+  }
+
+  setCandidateParams (params: CandidateParams) {
+    this.candidatesParams = params;
   }
 }

@@ -15,6 +15,7 @@ namespace API.Entities
         public int ContractPeriod { get; set; }
         public int WorkingHours { get; set; }
         public double Salary { get; set; }
+        public string City { get; set; }
         public ICollection<Candidate> Candidates { get; set; }
         public ICollection<Skill> Skills { get; set;}
     }

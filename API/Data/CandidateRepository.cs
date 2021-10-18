@@ -47,10 +47,10 @@ namespace API.Data
         public async Task<IEnumerable<CandidateDto>> GetCandidatesByFilterAsync(CandidateParams candidateParams)
         {
             var query = _context.Candidates.AsQueryable();
-            if (!String.IsNullOrEmpty(candidateParams.City))
-            {
-                query = query.Where(x => x.City == candidateParams.City);
-            }
+            // if (!String.IsNullOrEmpty(candidateParams.City))
+            // {
+            //     query = query.Where(x => x.City == candidateParams.City);
+            // }
              
             var minAge = DateTime.Today.AddYears(-candidateParams.MaxAge - 1);
             var maxAge = DateTime.Today.AddYears(-candidateParams.MinAge);

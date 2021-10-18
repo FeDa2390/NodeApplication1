@@ -4,14 +4,16 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211015164921_UpdateSchemaDBSkill")]
+    partial class UpdateSchemaDBSkill
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,21 +89,6 @@ namespace API.Data.Migrations
                     b.ToTable("CertificatesOfStudy");
                 });
 
-            modelBuilder.Entity("API.Entities.ContractPeriod", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Contract")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ContractsPeriod");
-                });
-
             modelBuilder.Entity("API.Entities.Dossier", b =>
                 {
                     b.Property<int>("Id")
@@ -146,7 +133,7 @@ namespace API.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Skills");
+                    b.ToTable("Skill");
                 });
 
             modelBuilder.Entity("API.Entities.Vacancy", b =>
@@ -157,9 +144,6 @@ namespace API.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Certificate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ContractPeriod")
