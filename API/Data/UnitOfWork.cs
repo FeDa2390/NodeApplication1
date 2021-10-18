@@ -17,6 +17,8 @@ namespace API.Data
 
         public ICandidateRepository CandidateRepository => new CandidateRepository(_context, _mapper);
 
+        public ISkillRepository SkillRepository => new SkillRepository(_context, _mapper);
+
         public async Task<bool> Complete()
         {
             return await _context.SaveChangesAsync() > 0;

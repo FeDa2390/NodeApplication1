@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Candidate } from '../_models/candidate';
 import { CandidateParams } from '../_models/candidateParams';
+import { Skill } from '../_models/skill';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,13 @@ export class AccountService {
     this.candidatesParams = new CandidateParams();
   }
 
+  getSkill() {
+   return this.http.get<Skill>(this.baseUrl + 'skills', {observe: 'response'}).pipe(
+      map(response => {
+        return response;
+      }));
+  }
+
   getCandidates(candidateParams1: CandidateParams) {
     var response = this.candidateCache.get(Object.values(CandidateParams).join('-'));
     if (response) {
@@ -32,7 +40,7 @@ export class AccountService {
     params = params.append('maxAge', candidateParams1.maxAge.toString());
     // params = params.append('country', candidateParams.country);
     // params = params.append('city', candidateParams.city);
-    // params = params.append('skill', candidateParams.skill);
+    params = params.append('skill', candidateParams1.skill);
     // params = params.append('grade', candidateParams.grade);
     
     // let candidatesResponse: any;
@@ -64,13 +72,6 @@ export class AccountService {
     return this.http.get<Candidate>(this.baseUrl + 'candidates/'+ username);
   }
 
-  getCandidates1() {
-    this.http.get(this.baseUrl + 'candidates')
-      .subscribe(response => {
-        return response;
-      })
-  }
-
   resetCandidateParams() {
     this.candidatesParams = new CandidateParams();
     return this.candidatesParams;
@@ -78,5 +79,17 @@ export class AccountService {
 
   setCandidateParams (params: CandidateParams) {
     this.candidatesParams = params;
+  }
+
+  getDetaiCandidate(username: string) {
+    const candidate = [...this.candidateCache.values()]
+      .reduce((arr, elem) => arr.concat(elem.result), [])
+      .find((candidate: Candidate) => candidate.username === username);
+
+    if (candidate) {
+      return of(candidate);
+    }
+
+    return this.http.get<Candidate>(this.baseUrl + 'candidates/detail-candidate/' + username);
   }
 }

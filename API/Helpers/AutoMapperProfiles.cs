@@ -11,6 +11,9 @@ namespace API.Helpers
         {
             CreateMap<Candidate, CandidateDto>()
                 .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
+            CreateMap<Skill, SkillDto>();
+            CreateMap<Candidate, CandidateDetailDto>()
+                .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
         }
     }
 }

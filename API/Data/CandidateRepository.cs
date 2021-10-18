@@ -47,15 +47,17 @@ namespace API.Data
         public async Task<IEnumerable<CandidateDto>> GetCandidatesByFilterAsync(CandidateParams candidateParams)
         {
             var query = _context.Candidates.AsQueryable();
-            // if (!String.IsNullOrEmpty(candidateParams.City))
-            // {
-            //     query = query.Where(x => x.City == candidateParams.City);
-            // }
              
             var minAge = DateTime.Today.AddYears(-candidateParams.MaxAge - 1);
             var maxAge = DateTime.Today.AddYears(-candidateParams.MinAge);
 
             query = query.Where(c => c.DateOfBirth >= minAge && c.DateOfBirth <= maxAge);
+
+            if (!String.IsNullOrEmpty(candidateParams.Skill)) 
+            {
+                query = query.Include(s => s.Skills)
+                    .Where(s => s.Skills.Any(s => s.SkillName == candidateParams.Skill));
+            }
 
             return await query.ProjectTo<CandidateDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
@@ -72,6 +74,15 @@ namespace API.Data
             return await _context.Candidates
                 .Where(x => x.Id == id)
                 .SingleOrDefaultAsync();
+        }
+
+        public async Task<CandidateDetailDto> GetCandidateDetailAsync(string username)
+        {
+            var query = _context.Candidates.AsQueryable();
+            query = query.Include(s => s.Skills);
+            query = query.Where(c => c.Username == username);
+
+            return await query.ProjectTo<CandidateDetailDto>(_mapper.ConfigurationProvider).SingleOrDefaultAsync();
         }
     }
 }

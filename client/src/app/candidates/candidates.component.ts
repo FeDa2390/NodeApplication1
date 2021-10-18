@@ -3,7 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { Candidate } from 'src/app/_models/candidate';
 import { CandidateParams } from 'src/app/_models/candidateParams';
 import { AccountService } from 'src/app/_services/account.service';
-import { Observable } from 'rxjs';
+import { observable, Observable, Observer } from 'rxjs';
+import { Skill } from '../_models/skill';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-candidates',
@@ -13,30 +15,32 @@ import { Observable } from 'rxjs';
 export class CandidatesComponent implements OnInit {
   candidates: Candidate[];
   candidateParams: CandidateParams;
-  candidates1: any;
+  skillList: Skill[];
 
   constructor(private http: HttpClient, private accountService: AccountService) { }
 
   ngOnInit() {
+    this.candidateParams = new CandidateParams;
+    this.loadSkills();
     this.loadCandidate();
   }
-
-  // loadCandidates1() {
-  //   this.accountService.getCandidates1().subscribe(response => {
-  //     this.candidates1 = response;
-  //   })
-  // }
 
   loadCandidate() {
     this.accountService.setCandidateParams(this.candidateParams);
     this.accountService.getCandidates(this.candidateParams).subscribe(response => {
-      this.candidates = response.result;
+      this.candidates = response.body;
     })
   }
 
   resetFilters() {
     this.candidateParams = this.accountService.resetCandidateParams();
     this.loadCandidate();
+  }
+
+  loadSkills() {
+    this.accountService.getSkill().subscribe(response => {
+      this.skillList = response.body;
+    })
   }
 
 }

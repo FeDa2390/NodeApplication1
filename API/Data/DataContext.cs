@@ -23,6 +23,11 @@ namespace API.Data
                 .HasMany(v => v.Vacancies)
                 .WithMany(c => c.Candidates)
                 .UsingEntity(cv => cv.ToTable("CandidateVacancy"));
+
+            builder.Entity<Candidate>()
+                .HasMany(s => s.Skills)
+                .WithMany(c => c.Candidates)
+                .UsingEntity(cs => cs.ToTable("CandidateSkill"));
         }
     }
 }

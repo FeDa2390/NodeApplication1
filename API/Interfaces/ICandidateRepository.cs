@@ -15,5 +15,7 @@ namespace API.Interfaces
         Task<IEnumerable<CandidateDto>> GetCandidatesByFilterAsync(CandidateParams candidateParams);
         Task<string> GetCandidateCity (string username);
         Task<Candidate> GetCandidateByIdAsync(int id);
+        
+        Task<CandidateDetailDto> GetCandidateDetailAsync(string username);
     }
 }

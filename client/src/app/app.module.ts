@@ -12,13 +12,17 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
 import { NavComponent } from './nav/nav.component';
+import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
+import { VacanciesComponent } from './vacancies/vacancies.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CandidatesComponent,
     HomeComponent,
-    NavComponent
+    NavComponent,
+    CandidateDetailComponent,
+    VacanciesComponent
   ],
   imports: [
     BrowserModule,

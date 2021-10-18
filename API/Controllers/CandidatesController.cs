@@ -40,6 +40,12 @@ namespace API.Controllers
             return Ok(candidates);
         }
 
+        [HttpGet("detail-candidate/{username}")]
+        public async Task<ActionResult<CandidateDetailDto>> GetCandidateDetailAsync(string username)
+        {
+            return await _unitOfWork.CandidateRepository.GetCandidateDetailAsync(username);
+        }
+
         [HttpPut]
         public async Task<ActionResult> UpdateCandidate(CandidateUpdateDto candidateUpdateDto)
         {

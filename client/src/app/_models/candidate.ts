@@ -7,5 +7,5 @@ export interface Candidate {
     nameCandidate: string,
     surnameCandidate: string,
     email: string,
-    address: string
+    address: string,
 }
