@@ -27,11 +27,11 @@ namespace API.Controllers
             return Ok(candidates);
         }
 
-        [HttpGet("{username}", Name = "GetCandidate")]
-        public async Task<ActionResult<CandidateDto>> GetCandidate(string username)
-        {
-            return await _unitOfWork.CandidateRepository.GetCandidateAsync(username);
-        }
+        // [HttpGet("{username}", Name = "GetCandidate")]
+        // public async Task<ActionResult<CandidateDto>> GetCandidate(string username)
+        // {
+        //     return await _unitOfWork.CandidateRepository.GetCandidateAsync(username);
+        // }
 
         [HttpGet("filter-candidates")]
         public async Task<ActionResult<IEnumerable<CandidateDto>>> GetCandidateFromParams([FromQuery] CandidateParams candidateParams)
@@ -40,10 +40,11 @@ namespace API.Controllers
             return Ok(candidates);
         }
 
-        [HttpGet("detail-candidate/{username}")]
+        [HttpGet("{username}", Name ="GetCandidateDetail")]
         public async Task<ActionResult<CandidateDetailDto>> GetCandidateDetailAsync(string username)
         {
-            return await _unitOfWork.CandidateRepository.GetCandidateDetailAsync(username);
+            var candidate = await _unitOfWork.CandidateRepository.GetCandidateDetailAsync(username);
+            return Ok(candidate);
         }
 
         [HttpPut]

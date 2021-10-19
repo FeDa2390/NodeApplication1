@@ -38,12 +38,10 @@ export class AccountService {
 
     params = params.append('minAge', candidateParams1.minAge.toString());
     params = params.append('maxAge', candidateParams1.maxAge.toString());
-    // params = params.append('country', candidateParams.country);
-    // params = params.append('city', candidateParams.city);
-    params = params.append('skill', candidateParams1.skill);
-    // params = params.append('grade', candidateParams.grade);
-    
-    // let candidatesResponse: any;
+    for (var s in candidateParams1.skill) {
+      params = params.append('skill', candidateParams1.skill[s]);
+    }
+
     return this.http.get<Candidate>(this.baseUrl + 'candidates/filter-candidates', { observe: 'response', params }).pipe (
       map(response => {
         return response;
@@ -81,15 +79,9 @@ export class AccountService {
     this.candidatesParams = params;
   }
 
-  getDetaiCandidate(username: string) {
-    const candidate = [...this.candidateCache.values()]
-      .reduce((arr, elem) => arr.concat(elem.result), [])
-      .find((candidate: Candidate) => candidate.username === username);
-
-    if (candidate) {
-      return of(candidate);
-    }
-
-    return this.http.get<Candidate>(this.baseUrl + 'candidates/detail-candidate/' + username);
+  getDetailCandidate(username: string) {
+    // let params = new HttpParams();
+    // params = params.append('username', username);
+    return this.http.get<Candidate>(this.baseUrl + 'candidates/' + username);
   }
 }

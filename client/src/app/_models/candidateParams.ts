@@ -3,6 +3,6 @@ export class CandidateParams {
     maxAge: number = 99;
     // country: string;
     // city: string;
-    skill: string;
+    skill: string[];
     // grade: string;
 }

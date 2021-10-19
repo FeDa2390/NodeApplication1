@@ -1,3 +1,5 @@
+import { Skill } from "./skill";
+
 export interface Candidate {
     id: number,
     username: string,
@@ -8,4 +10,5 @@ export interface Candidate {
     surnameCandidate: string,
     email: string,
     address: string,
+    skills: Skill[]
 }

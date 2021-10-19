@@ -53,10 +53,14 @@ namespace API.Data
 
             query = query.Where(c => c.DateOfBirth >= minAge && c.DateOfBirth <= maxAge);
 
-            if (!String.IsNullOrEmpty(candidateParams.Skill)) 
+            if (candidateParams.Skill != null) 
             {
-                query = query.Include(s => s.Skills)
-                    .Where(s => s.Skills.Any(s => s.SkillName == candidateParams.Skill));
+                foreach (var skill in candidateParams.Skill)
+                {
+                    query = query.Include(s => s.Skills)
+                    .Where(s => s.Skills.Any(s => s.SkillName == skill));
+                }
+                
             }
 
             return await query.ProjectTo<CandidateDto>(_mapper.ConfigurationProvider).ToListAsync();

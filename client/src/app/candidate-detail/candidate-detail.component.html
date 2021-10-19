@@ -1,1 +1,15 @@
-<h1>Work in progress!!!</h1>
+<h1><b>Candidate: </b>{{candidate.nameCandidate}} {{candidate.surnameCandidate}}</h1>
+<div class="container mt-3" >
+    <h3><b>Username: </b> {{candidate.username}}</h3>
+    <h3><b>Age: </b> {{candidate.age}}</h3>
+    <h3><b>City: </b> {{candidate.city}}</h3>
+    <h3><b>Country: </b> {{candidate.country}}</h3>
+    <h3><b>EMail: </b> {{candidate.email}}</h3>
+    <h3><b>Address: </b> {{candidate.address}}</h3>
+    <h3><b>Skill: </b> 
+        <ul>
+            <li *ngFor="let skill of candidate.skills">{{skill.skillName}}</li>
+        </ul>
+    </h3>
+
+</div>

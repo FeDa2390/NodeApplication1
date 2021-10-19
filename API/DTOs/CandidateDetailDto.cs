@@ -12,6 +12,6 @@ namespace API.DTOs
         public string SurnameCandidate { get; set; }
         public string EMail { get; set; }
         public string Address { get; set; }
-        public IEnumerable<SkillDto> SkillsCandidate { get; set; }
+        public IEnumerable<SkillDto> Skills { get; set; }
     }
 }
